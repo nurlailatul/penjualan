@@ -1,0 +1,18 @@
+status_transaksi ENUM('PESAN', 'DIBAYAR', 'SELESAI', 'BATAL') NOT NULL DEFAULT 'PESAN'
+
+
+status_transaksi ENUM('PESAN','PROSES','SELESAI', 'BATAL') NOT NULL DEFAULT 'PESAN',
+status_pembayaran ENUM('MENUNGGU', 'SEBAGIAN', 'LUNAS','BATAL') NOT NULL DEFAULT 'MENUNGGU',
+status_pengiriman ENUM('MENUNGGU', 'PROSES', 'SAMPAI','GAGAL') NOT NULL DEFAULT 'MENUNGGU',
+
+status_transaksi => ubah di modal
+		    if status_pembayaran = LUNAS AND status_pengiriman = SAMPAI => SELESAI
+		    if set to BATAL => Set status_pembayaran BATAL, set status_pengiriman => GAGAL
+status_pembayaran => no record in table => MENUNGGU
+		     recorded but less than should be paid => SEBAGIAN
+		     recorded and equal or more than => LUNAS
+		     ubah di form pembayaran OR status_transaksi = BATAL => BATAL
+status_pengiriman => no record in table => MENUNGGU
+		     recorded but waktu_sampai IS NULL => PROSES
+		     recorded and waktu_sampai NOT NULL => SAMPAI
+		     ubah di form pengiriman OR status_transaksi = BATAL => BATAL

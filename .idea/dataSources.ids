@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - e_rtlh@localhost" uuid="6e01e8f6-bc77-4cdd-be83-ba3e7a06e079">
+    <database-info product="MySQL" version="5.7.19" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+      <schema id="1" name="e_rtlh">
+        <visible>1</visible>
+      </schema>
+      <schema id="2" name="information_schema"/>
+      <table id="3" parent="1" name="akses_group_modul"/>
+      <table id="4" parent="1" name="berita"/>
+      <table id="5" parent="1" name="modul_sistem"/>
+      <table id="6" parent="1" name="reset_password"/>
+      <table id="7" parent="1" name="skpd"/>
+      <table id="8" parent="1" name="sumber_berita"/>
+      <table id="9" parent="1" name="user"/>
+      <table id="10" parent="1" name="user_group"/>
+      <table id="11" parent="1" name="personil"/>
+      <table id="12" parent="1" name="kegiatan_ruswa"/>
+      <table id="13" parent="1" name="data_rumah"/>
+      <table id="14" parent="1" name="penerima_bantuan"/>
+      <column id="15" parent="3" name="id_group">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="16" parent="3" name="nama_modul">
+        <mandatory>1</mandatory>
+        <data-type>varchar(25)|0</data-type>
+      </column>
+      <column id="17" parent="3" name="hak_akses">
+        <mandatory>1</mandatory>
+        <data-type>varchar(20)|0</data-type>
+      </column>
+      <index id="18" parent="3" name="fk_akses_group_modul__nama_modul">
+        <columns>nama_modul</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="19" parent="3" name="PRIMARY">
+        <columns>id_group
+nama_modul
+hak_akses</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="20" parent="3" name="fk_akses_group_modul__id_group">
+        <columns>id_group</columns>
+        <ref-key>~.user_group.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="21" parent="3" name="fk_akses_group_modul__nama_modul">
+        <columns>nama_modul</columns>
+        <ref-key>~.modul_sistem.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="22" parent="4" name="id_berita">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="23" parent="4" name="judul">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="24" parent="4" name="konten">
+        <mandatory>1</mandatory>
+        <data-type>text|0</data-type>
+      </column>
+      <column id="25" parent="4" name="file_gambar">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="26" parent="4" name="id_sumber_berita">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="27" parent="4" name="created_user">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="28" parent="4" name="created_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <column id="29" parent="4" name="published_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <column id="30" parent="4" name="last_modified_user">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="31" parent="4" name="last_modified_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <column id="32" parent="4" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <index id="33" parent="4" name="fk_berita__created_user">
+        <columns>created_user</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="34" parent="4" name="fk_berita__id_sumber_berita">
+        <columns>id_sumber_berita</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="35" parent="4" name="fk_berita__last_modified_user">
+        <columns>last_modified_user</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="36" parent="4" name="PRIMARY">
+        <columns>id_berita</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="37" parent="4" name="fk_berita__id_sumber_berita">
+        <columns>id_sumber_berita</columns>
+        <ref-key>~.sumber_berita.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="38" parent="4" name="fk_berita__created_user">
+        <columns>created_user</columns>
+        <ref-key>~.user.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="39" parent="4" name="fk_berita__last_modified_user">
+        <columns>last_modified_user</columns>
+        <ref-key>~.user.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="40" parent="5" name="nama_modul">
+        <mandatory>1</mandatory>
+        <data-type>varchar(25)|0</data-type>
+      </column>
+      <column id="41" parent="5" name="keterangan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="42" parent="5" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="43" parent="5" name="PRIMARY">
+        <columns>nama_modul</columns>
+        <primary>1</primary>
+      </key>
+      <column id="44" parent="6" name="id_request">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="45" parent="6" name="email">
+        <mandatory>1</mandatory>
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="46" parent="6" name="reset_code">
+        <mandatory>1</mandatory>
+        <data-type>char(64)|0</data-type>
+      </column>
+      <column id="47" parent="6" name="request_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+      </column>
+      <column id="48" parent="6" name="sent_time">
+        <data-type>datetime|0</data-type>
+      </column>
+      <column id="49" parent="6" name="reset_time">
+        <data-type>datetime|0</data-type>
+      </column>
+      <index id="50" parent="6" name="idx__email">
+        <columns>reset_code</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="51" parent="6" name="PRIMARY">
+        <columns>id_request</columns>
+        <primary>1</primary>
+      </key>
+      <column id="52" parent="7" name="id_skpd">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="53" parent="7" name="nama">
+        <mandatory>1</mandatory>
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="54" parent="7" name="alamat">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="55" parent="7" name="kota">
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="56" parent="7" name="kode_pos">
+        <data-type>varchar(10)|0</data-type>
+      </column>
+      <column id="57" parent="7" name="no_telp">
+        <data-type>varchar(15)|0</data-type>
+      </column>
+      <column id="58" parent="7" name="no_fax">
+        <data-type>varchar(15)|0</data-type>
+      </column>
+      <column id="59" parent="7" name="nama_pimpinan">
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="60" parent="7" name="nip_pimpinan">
+        <data-type>varchar(18)|0</data-type>
+      </column>
+      <column id="61" parent="7" name="no_telp_pimpinan">
+        <data-type>varchar(15)|0</data-type>
+      </column>
+      <column id="62" parent="7" name="pangkat_pimpinan">
+        <data-type>varchar(5)|0</data-type>
+      </column>
+      <column id="63" parent="7" name="email_pimpinan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="64" parent="7" name="logo">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <key id="65" parent="7" name="PRIMARY">
+        <columns>id_skpd</columns>
+        <primary>1</primary>
+      </key>
+      <column id="66" parent="8" name="id_sumber_berita">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="67" parent="8" name="nama">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="68" parent="8" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="69" parent="8" name="PRIMARY">
+        <columns>id_sumber_berita</columns>
+        <primary>1</primary>
+      </key>
+      <column id="70" parent="9" name="id_user">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="71" parent="9" name="username">
+        <mandatory>1</mandatory>
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="72" parent="9" name="email">
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="73" parent="9" name="real_name">
+        <data-type>varchar(100)|0</data-type>
+      </column>
+      <column id="74" parent="9" name="password">
+        <mandatory>1</mandatory>
+        <data-type>char(64)|0</data-type>
+      </column>
+      <column id="75" parent="9" name="id_group">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="76" parent="9" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <column id="77" parent="9" name="last_modified_user">
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="78" parent="9" name="last_modified_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <index id="79" parent="9" name="idx_unq__email">
+        <columns>email</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="80" parent="9" name="id_group">
+        <columns>id_group</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="81" parent="9" name="PRIMARY">
+        <columns>id_user</columns>
+        <primary>1</primary>
+      </key>
+      <key id="82" parent="9" name="idx_unq__email">
+        <columns>email</columns>
+        <underlying-index>idx_unq__email</underlying-index>
+      </key>
+      <foreign-key id="83" parent="9" name="fk_user__id_group">
+        <columns>id_group</columns>
+        <ref-key>~.user_group.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="84" parent="10" name="id_group">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="85" parent="10" name="nama_group">
+        <mandatory>1</mandatory>
+        <data-type>varchar(50)|0</data-type>
+      </column>
+      <column id="86" parent="10" name="keterangan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="87" parent="10" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="88" parent="10" name="PRIMARY">
+        <columns>id_group</columns>
+        <primary>1</primary>
+      </key>
+      <column id="89" parent="11" name="id_personil">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="90" parent="11" name="id_skpd">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="91" parent="11" name="nama">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="92" parent="11" name="nip">
+        <data-type>varchar(18)|0</data-type>
+      </column>
+      <column id="93" parent="11" name="pangkat">
+        <data-type>varchar(5)|0</data-type>
+      </column>
+      <column id="94" parent="11" name="nama_jabatan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="95" parent="11" name="alamat">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="96" parent="11" name="kode_pos">
+        <data-type>varchar(10)|0</data-type>
+      </column>
+      <column id="97" parent="11" name="no_telp">
+        <data-type>varchar(15)|0</data-type>
+      </column>
+      <column id="98" parent="11" name="email">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="99" parent="11" name="file_foto">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="100" parent="11" name="last_modified_user">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="101" parent="11" name="last_modified_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <column id="102" parent="11" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <index id="103" parent="11" name="fk_personil__id_skpd">
+        <columns>id_skpd</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="104" parent="11" name="PRIMARY">
+        <columns>id_personil</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="105" parent="11" name="fk_personil__id_skpd">
+        <columns>id_skpd</columns>
+        <ref-key>~.skpd.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="106" parent="12" name="id_kegiatan_ruswa">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="107" parent="12" name="nama">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="108" parent="12" name="kecamatan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="109" parent="12" name="sasaran">
+        <data-type>text|0</data-type>
+      </column>
+      <column id="110" parent="12" name="manfaat">
+        <data-type>text|0</data-type>
+      </column>
+      <column id="111" parent="12" name="keluaran">
+        <data-type>text|0</data-type>
+      </column>
+      <column id="112" parent="12" name="keterangan">
+        <data-type>text|0</data-type>
+      </column>
+      <column id="113" parent="12" name="estimasi_tanggal_mulai">
+        <data-type>date|0</data-type>
+      </column>
+      <column id="114" parent="12" name="estimasi_tanggal_selesai">
+        <data-type>date|0</data-type>
+      </column>
+      <column id="115" parent="12" name="last_modified_user">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="116" parent="12" name="last_modified_time">
+        <mandatory>1</mandatory>
+        <data-type>datetime|0</data-type>
+        <default-expression>CURRENT_TIMESTAMP</default-expression>
+      </column>
+      <column id="117" parent="12" name="is_active">
+        <mandatory>1</mandatory>
+        <data-type>enum(&apos;1&apos;, &apos;0&apos;)|0</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="118" parent="12" name="PRIMARY">
+        <columns>id_kegiatan_ruswa</columns>
+        <primary>1</primary>
+      </key>
+      <column id="119" parent="13" name="id_rumah">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="120" parent="13" name="kecamatan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="121" parent="13" name="desa">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="122" parent="13" name="nama_kepala_ruta">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="123" parent="13" name="alamat">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="124" parent="13" name="nik">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="125" parent="13" name="gender">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="126" parent="13" name="umur">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="127" parent="13" name="pendidikan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="128" parent="13" name="pekerjaan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="129" parent="13" name="penghasilan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="130" parent="13" name="luas_rumah">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="131" parent="13" name="jumlah_penghuni">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="132" parent="13" name="jumlah_keluarga">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="133" parent="13" name="kepemilikan_rumah">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="134" parent="13" name="kepemilikan_lahan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="135" parent="13" name="aset_rumah_lain">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="136" parent="13" name="aset_tanah_lain">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="137" parent="13" name="bantuan_pemerintah">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="138" parent="13" name="kawasan_perumahan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="139" parent="13" name="sumber_air_minum">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="140" parent="13" name="sumber_penerangan">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="141" parent="13" name="kamar_mandi">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="142" parent="13" name="jarak_pembuangan_tinja">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="143" parent="13" name="jendela">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="144" parent="13" name="ventilasi">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="145" parent="13" name="pondasi">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="146" parent="13" name="kondisi_balok">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="147" parent="13" name="bahan_lantai">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="148" parent="13" name="kondisi_lantai">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="149" parent="13" name="bahan_dinding">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="150" parent="13" name="kondisi_dinding">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="151" parent="13" name="bahan_atap">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="152" parent="13" name="kondisi_atap">
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <key id="153" parent="13" name="PRIMARY">
+        <columns>id_rumah</columns>
+        <primary>1</primary>
+      </key>
+      <column id="154" parent="14" name="id_penerima_bantuan">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="155" parent="14" name="id_kegiatan_ruswa">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="156" parent="14" name="id_rumah">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+      </column>
+      <column id="157" parent="14" name="nilai_bantuan">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="158" parent="14" name="realisasi">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <key id="159" parent="14" name="PRIMARY">
+        <columns>id_penerima_bantuan</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>

@@ -1,0 +1,21 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+$config["base_url"] = site_url();
+$config['reuse_query_string'] = FALSE;
+$config['uri_segment'] = 4;
+$config['first_link'] = 'First';
+$config['last_link'] = 'Last';
+$config['next_link'] = '>';
+$config['prev_link'] = '<';
+$config['num_tag_open'] = "<li>";
+$config['num_tag_close'] = ' </li>';
+$config['next_tag_open'] = "<li>";
+$config['prev_tag_close'] = ' </li>';
+$config['prev_tag_open'] = "<li>";
+$config['first_tag_open'] = "<li>";
+$config['first_tag_close'] = ' </li>';
+$config['last_tag_open'] = "<li>";
+$config['last_tag_close'] = ' </li>';
+$config['next_tag_close'] = ' </li>';
+$config['cur_tag_open'] = "<li class='active'><a>";
+$config['cur_tag_close'] = ' </a></li>';
