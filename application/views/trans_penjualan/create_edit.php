@@ -11,7 +11,7 @@
     </ol>
 </section>
 <!-- form start -->
-<form class="form-horizontal" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" method="post" enctype="multipart/form-data" id="frm_trx">
 <section class="content">
     <div class="row">
         <div class="col-md-12">
@@ -227,7 +227,7 @@
                             <select class="form-control" name="status_pengiriman" id="statusPengiriman" width="100%">
                                 <option selected disabled>Pilih Salah Satu</option>
                               <?php foreach ($data_status_pengiriman as $r){ ?>
-                                  <option value="<?php echo $r; ?>" <?php echo (isset($edit) && $edit->status_pengiriman == $r) ? 'selected': ''; ?>><?php echo $r; ?></option>
+                                  <option value="<?php echo $r; ?>" <?php echo (isset($edit) && isset($pengiriman) && $edit->status_pengiriman == $r) ? 'selected': ''; ?>><?php echo $r; ?></option>
                               <?php } ?>
                             </select>
                         </div>
@@ -236,17 +236,17 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Waktu Pengiriman <label class="text-red">*</label></label>
+                        <label class="col-sm-2 control-label">Waktu Pengiriman</label>
 
                         <div class="col-sm-6">
                           <?php if(isset($pengiriman)){ ?>
                               <input type="hidden" name="id_pengiriman" value="<?php echo (isset($pengiriman)) ? $pengiriman->id_pengiriman : ''; ?>">
                           <?php } ?>
-                            <input type="text" name="waktu_pengiriman" id="waktuPengiriman" class="form-control datetimepicker2" placeholder="Masukkan waktu pengiriman" required value="<?php echo (isset($pengiriman)) ? $pengiriman->waktu_pengiriman : ''; ?>">
+                            <input type="text" name="waktu_pengiriman" id="waktuPengiriman" class="form-control datetimepicker2" placeholder="Masukkan waktu pengiriman" value="<?php echo (isset($pengiriman)) ? $pengiriman->waktu_pengiriman : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Jenis Ekspedisi <label class="text-red">*</label> </label>
+                        <label class="col-sm-2 control-label">Jenis Ekspedisi </label>
 
                         <div class="col-sm-6">
                             <select class="form-control chosen-select" name="jenis_ekspedisi" id="jenisEkspedisi" data-placeholder="Pilih Jenis Ekspedisi" onchange="changeEkspedisi(this.value)">
@@ -277,10 +277,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Biaya Pengiriman <label class="text-red">*</label> </label>
+                        <label class="col-sm-2 control-label">Biaya Pengiriman </label>
 
                         <div class="col-sm-6">
-                            <input type="text" class="form-control nominal" name="biaya_pengiriman" id="biayaPengiriman" placeholder="Masukkan biaya pengiriman" value="<?php echo (isset($pengiriman)) ? set_currency_format($pengiriman->biaya_pengiriman): '0'; ?>">
+                            <input type="text" class="form-control nominal" name="biaya_pengiriman" id="biayaPengiriman" placeholder="Masukkan biaya pengiriman" value="<?php echo (isset($pengiriman)) ? set_currency_format($pengiriman->biaya_pengiriman): ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -291,7 +291,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Waktu Sampai <label class="text-red">*</label></label>
+                        <label class="col-sm-2 control-label">Waktu Sampai</label>
 
                         <div class="col-sm-6">
                             <input type="text" name="waktu_sampai" id="waktuSampai" class="form-control datetimepicker2" placeholder="Masukkan waktu barang sampai" value="<?php echo (isset($pengiriman)) ? $pengiriman->waktu_sampai: ''; ?>">
@@ -315,27 +315,27 @@
                             <select class="form-control" name="status_pembayaran" id="statusPembayaran" width="100%">
                                 <option selected disabled>Pilih Salah Satu</option>
                               <?php foreach ($data_status_pembayaran as $r){ ?>
-                                  <option value="<?php echo $r; ?>" <?php echo (isset($edit) && $edit->status_pembayaran == $r) ? 'selected': ''; ?>><?php echo $r; ?></option>
+                                  <option value="<?php echo $r; ?>" <?php echo (isset($edit) && isset($pembayaran) && $edit->status_pembayaran == $r) ? 'selected': ''; ?>><?php echo $r; ?></option>
                               <?php } ?>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Waktu Pembayaran <label class="text-red">*</label></label>
+                        <label class="col-sm-2 control-label">Waktu Pembayaran </label>
 
                         <div class="col-sm-6">
                           <?php if(isset($pembayaran)){ ?>
                               <input type="hidden" name="id_pembayaran" value="<?php echo (isset($pembayaran)) ? $pembayaran->id_pembayaran : ''; ?>">
                           <?php } ?>
-                            <input type="text" name="waktu_pembayaran" id="waktuPembayaran" class="form-control datetimepicker2" placeholder="Masukkan waktu pembayaran" required value="<?php echo (isset($pembayaran)) ? $pembayaran->waktu_pembayaran : ''; ?>">
+                            <input type="text" name="waktu_pembayaran" id="waktuPembayaran" class="form-control datetimepicker2" placeholder="Masukkan waktu pembayaran" value="<?php echo (isset($pembayaran)) ? $pembayaran->waktu_pembayaran : ''; ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Metode Pembayaran <label class="text-red">*</label> </label>
+                        <label class="col-sm-2 control-label">Metode Pembayaran </label>
 
                         <div class="col-sm-6">
-                            <select class="form-control" name="metode_pembayaran">
+                            <select class="form-control" name="metode_pembayaran" id="metodePembayaran">
                                 <option selected disabled>Pilih Salah Satu</option>
                               <?php foreach ($metode_pembayaran as $r){ ?>
                                   <option value="<?php echo $r; ?>" <?php if(isset($pembayaran) && $pembayaran->metode_pembayaran == $r) echo 'selected'; ?> ><?php echo $r; ?></option>
@@ -345,10 +345,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Nominal Pembayaran <label class="text-red">*</label> </label>
+                        <label class="col-sm-2 control-label">Nominal Pembayaran </label>
 
                         <div class="col-sm-6">
-                            <input type="text" class="form-control nominal" id="nominal" name="nominal" placeholder="Masukkan nominal pembayaran" value="<?php echo (isset($pembayaran)) ? set_currency_format($pembayaran->nominal): '0'; ?>">
+                            <input type="text" class="form-control nominal" id="nominal" name="nominal" placeholder="Masukkan nominal pembayaran" value="<?php echo (isset($pembayaran)) ? set_currency_format($pembayaran->nominal): ''; ?>">
                             <div class="help-block" style="font-style: italic;"><a style="cursor: pointer;" onclick="getTotalBiaya()">Hitung Ulang Total Biaya</a></div>
                         </div>
                     </div>
@@ -386,7 +386,7 @@
 <script>
     var data_barang = <?php echo json_encode($data_barang); ?>;
     var no_item = <?php echo isset($edit) ? $n : '1'; ?>;
-    var total_harga = 0;
+    var total_harga = <?php echo isset($edit) ? $edit->tot_harga_jual : '0'; ?>;
 
 
     function changeJenisTransaksi(jenis) {
@@ -588,13 +588,13 @@
             biayaPembatalan = '0';
 
         if(biayaPengiriman == '')
-            biayaPengiriman == '0';
+            biayaPengiriman = '0';
 
-        diskon = floatConv(diskon);
-        biayaTambahan = floatConv(biayaTambahan);
-        biayaPembatalan = floatConv(biayaPembatalan);
-        biayaPengiriman = floatConv(biayaPengiriman);
-        var totalHarga = floatConv(total_harga);
+        diskon = floatConv(diskon.toString());
+        biayaTambahan = floatConv(biayaTambahan.toString());
+        biayaPembatalan = floatConv(biayaPembatalan.toString());
+        biayaPengiriman = floatConv(biayaPengiriman.toString());
+        var totalHarga = floatConv(total_harga.toString());
 
         var total = totalHarga + biayaTambahan + biayaPembatalan + biayaPengiriman - diskon;
         total = currencyFormat(total);
@@ -605,4 +605,47 @@
         var regex = /[.,\s]/g;
         return parseFloat(string.replace(regex, ''));
     }
+
+    $(document).ready( function() {
+        $("#frm_trx").submit(function(e){
+            e.preventDefault();
+            var statusPengiriman = $("#statusPengiriman").val();
+            var statusPembayaran = $("#statusPembayaran").val();
+
+            var valid = true;
+
+            if(statusPengiriman){
+                if($("#waktuPengiriman").val() == ''){
+                    alert('Waktu Pengiriman tidak boleh kosong');
+                    valid = false;
+                }
+                if(!$("#jenisEkspedisi").val()){
+                    alert('Jenis Ekspedisi tidak boleh kosong');
+                    valid = false;
+                }
+                if($("#biayaPengiriman").val() == ''){
+                    alert('Biaya Pengiriman tidak boleh kosong');
+                    valid = false;
+                }
+            }
+
+            if(statusPembayaran){
+                if($("#waktuPembayaran").val() == ''){
+                    alert('Waktu Pembayaran tidak boleh kosong');
+                    valid = false;
+                }
+                if(!$("#metodePembayaran").val()){
+                    alert('Metode Pembayaran tidak boleh kosong');
+                    valid = false;
+                }
+                if($("#nominal").val() == ''){
+                    alert('Biaya Pengiriman tidak boleh kosong');
+                    valid = false;
+                }
+            }
+
+            if(valid)
+                $("#frm_trx").unbind().submit();
+        });
+    });
 </script>

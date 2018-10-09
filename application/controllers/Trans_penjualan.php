@@ -190,8 +190,19 @@ class Trans_penjualan extends BaseController
                     $this->data['list_barang'] = $this->m_trans_penjualan->get_data_trans_detail($edit->id_trans);
                     $this->data['edit'] = $edit;
 
-                    $this->data['pengiriman'] = $this->m_trans_penjualan->get_data_pengiriman_trans_penjualan($id);
-                    $this->data['pembayaran'] = $this->m_trans_penjualan->get_data_pembayaran_trans_penjualan($id)[0];
+                    $pengiriman = $this->m_trans_penjualan->get_data_pengiriman_trans_penjualan($id);
+                    if(!empty($pengiriman)){
+                      $waktu_pengiriman = set_indo_datetime_format($pengiriman->waktu_pengiriman);
+                      $pengiriman->waktu_pengiriman = $waktu_pengiriman;
+                    }
+                  $this->data['pengiriman'] = $pengiriman;
+
+                    $pembayaran = $this->m_trans_penjualan->get_data_pembayaran_trans_penjualan($id);
+                    if(!empty($pembayaran)){
+                      $waktu_pembayaran = set_indo_datetime_format($pembayaran->waktu_pembayaran);
+                      $pembayaran->waktu_pembayaran = $waktu_pembayaran;
+                    }
+                    $this->data['pembayaran'] = $pembayaran;
                 }
             }
 
@@ -289,7 +300,7 @@ class Trans_penjualan extends BaseController
 
         if($this->input->post("waktu_pembayaran")){
             if(isset($id_pembayaran) && $id_pembayaran != null) {
-                $status = $this->proses_insert_edit_pembayaran_trans_penjualan($id_pembayaran);
+                $status = $this->proses_insert_edit_pembayaran_trans_penjualan($id_trans, $id_pembayaran);
                 $proses = 'diubah';
                 if ($status) {
                     $is_success = true;
@@ -297,7 +308,7 @@ class Trans_penjualan extends BaseController
                     $is_success = false;
                 }
             } else {
-                $status = $this->proses_insert_edit_pembayaran_trans_penjualan();
+                $status = $this->proses_insert_edit_pembayaran_trans_penjualan($id_trans);
                 $proses = 'ditambahkan';
                 if ($status) {
                     $is_success = true;
@@ -392,9 +403,9 @@ class Trans_penjualan extends BaseController
               $id_pengiriman = $this->input->post("id_pengiriman", TRUE);
               $id_pembayaran = $this->input->post("id_pembayaran", TRUE);
               $result1 = $this->proses_insert_edit_pengiriman_trans_penjualan($id, $id_pengiriman);
-              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan($id_pembayaran, $id);
+              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan($id, $id_pembayaran);
 
-              if(!$result1 || $result2)
+              if(!$result1 || !$result2)
                 return FALSE;
             }
             else
@@ -405,9 +416,8 @@ class Trans_penjualan extends BaseController
             $result = $this->m_trans_penjualan->insert_trans_penjualan($parameters);
 
             if($result){
-              echo $result;
               $result1 = $this->proses_insert_edit_pengiriman_trans_penjualan($result);
-              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan(NULL, $result);
+              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan($result);
 
               if(!$result1 || !$result2)
                 return FALSE;
@@ -423,100 +433,110 @@ class Trans_penjualan extends BaseController
     {
         // Declare table fields
         $array_fields = array('waktu_pengiriman','jenis_ekspedisi','id_kurir','no_resi','biaya_pengiriman','catatan','waktu_sampai');
-        if(!isset($id_trans))
-          $array_fields[] = 'id_trans';
 
         // Store input into variable
+        $is_input = FALSE;
         foreach ($array_fields as $r){
             ${$r} = $this->input->post($r, TRUE);
-            if(${$r} == "")
+            if(${$r} == "") {
                 ${$r} = NULL;
+            } else {
+              if(!$is_input){
+                $is_input = TRUE;
+              }
+            }
         }
 
-        // Store input variables in array
-        $parameters = array();
-        $parameters['id_trans'] = $id_trans;
-        foreach ($array_fields as $r){
+        if($is_input) {
+          // Store input variables in array
+          $parameters = array();
+          $parameters['id_trans'] = $id_trans;
+          foreach ($array_fields as $r) {
             $parameters[$r] = ${$r};
-        }
-        $this->data['edit'] = $parameters;
+          }
+          $this->data['edit'] = $parameters;
 
-        // Convert biaya_pengiriman format from 123.234 to 123234
-        if(!empty($biaya_pengiriman)) {
+          // Convert biaya_pengiriman format from 123.234 to 123234
+          if (!empty($biaya_pengiriman)) {
             $parameters['biaya_pengiriman'] = str_replace(',', '.', str_replace('.', '', $biaya_pengiriman));
-        } else
+          } else
             $parameters['biaya_pengiriman'] = 0;
 
-        // Convert Waktu Pengiriman FROM DD-MM-YYYY hh:mm yo YYYY-MM-DD
-        $new_format = set_database_datetime_format($waktu_pengiriman);
-        $parameters['waktu_pengiriman'] = $new_format;
-        if(!empty($waktu_sampai)){
+          // Convert Waktu Pengiriman FROM DD-MM-YYYY hh:mm yo YYYY-MM-DD
+          $new_format = set_database_datetime_format($waktu_pengiriman);
+          $parameters['waktu_pengiriman'] = $new_format;
+          if (!empty($waktu_sampai)) {
             $new_format = set_database_datetime_format($waktu_sampai);
             $parameters['waktu_sampai'] = $new_format;
-        }
+          }
 
-
-        echo $id_trans;
-        print_r($parameters);
-        // Process Data
-        if(isset($id_pengiriman) && $id_pengiriman != null) {
+          // Process Data
+          if (isset($id_pengiriman) && $id_pengiriman != null) {
             // Update Data
             $result = $this->m_trans_penjualan->update_pengiriman_trans_penjualan($id_trans, $id_pengiriman, $parameters);
-        }
-        else {
+          } else {
             // Insert Data
             $result = $this->m_trans_penjualan->insert_pengiriman_trans_penjualan($id_trans, $parameters);
-        }
+          }
 
-        return $result;
+          return $result;
+        }
+        else {
+          return TRUE;
+        }
     }
 
-    function proses_insert_edit_pembayaran_trans_penjualan($id_pembayaran = null, $id_trans = null)
+    function proses_insert_edit_pembayaran_trans_penjualan($id_trans = null, $id_pembayaran = null)
     {
         // Declare table fields
         $array_fields = array('waktu_pembayaran','metode_pembayaran','nominal','catatan');
-        if(!isset($id_trans))
-          $array_fields[] = 'id_trans';
 
         // Store input into variable
+        $is_input = false;
         foreach ($array_fields as $r){
             ${$r} = $this->input->post($r, TRUE);
-            if(${$r} == "")
+            if(${$r} == "") {
                 ${$r} = NULL;
+            } else {
+              if(!$is_input)
+                $is_input = TRUE;
+            }
         }
 
-        // Store input variables in array
-        $parameters = array();
-        foreach ($array_fields as $r){
-            $parameters[$r] = ${$r};
-        }
+        if($is_input) {
 
-        if(isset($id_trans)){
+          // Store input variables in array
+          $parameters = array();
           $parameters['id_trans'] = $id_trans;
-        }
-        $this->data['edit'] = $parameters;
+          foreach ($array_fields as $r) {
+            $parameters[$r] = ${$r};
+          }
 
-        // Convert biaya_pembayaran format from 123.234 to 123234
-        if(!empty($nominal)) {
+          $this->data['edit'] = $parameters;
+
+          // Convert biaya_pembayaran format from 123.234 to 123234
+          if (!empty($nominal)) {
             $parameters['nominal'] = str_replace(',', '.', str_replace('.', '', $nominal));
-        }
+          }
 
-        // Convert Waktu Pembayaran FROM DD-MM-YYYY hh:mm yo YYYY-MM-DD
-        $new_format = set_database_datetime_format($waktu_pembayaran);
-        $parameters['waktu_pembayaran'] = $new_format;
+          // Convert Waktu Pembayaran FROM DD-MM-YYYY hh:mm yo YYYY-MM-DD
+          $new_format = set_database_datetime_format($waktu_pembayaran);
+          $parameters['waktu_pembayaran'] = $new_format;
 
-        // Process Data
-        if(isset($id_pembayaran) && $id_pembayaran != null) {
+          // Process Data
+          if (isset($id_pembayaran) && $id_pembayaran != null) {
             // Update Data
             $parameters['id_trans'] = $this->input->post("id_trans", TRUE);
             $result = $this->m_trans_penjualan->update_pembayaran_trans_penjualan($id_pembayaran, $parameters);
-        }
-        else {
+          } else {
             // Insert Data
             $result = $this->m_trans_penjualan->insert_pembayaran_trans_penjualan($parameters);
-        }
+          }
 
-        return $result;
+          return $result;
+        }
+        else
+          return TRUE;
     }
 
     function hapus($id_trans)

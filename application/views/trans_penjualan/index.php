@@ -250,25 +250,17 @@
                                                     <li>
                                                         <a onclick="ubahStatus(false,'<?php echo $r->id_trans; ?>','<?php echo $r->status_transaksi; ?>')"  class="text-blue" style="cursor: pointer;"><i class="fa fa-mail-forward"></i> Ubah Status</a></li>
                                                         <li>
-                                                            <a href="<?php echo base_url('trans_penjualan/cetak/'.$r->id_trans); ?>" target="_blank" class="text-blue" style="cursor: pointer;"><i class="fa fa-print"></i> Cetak Struk</a></li>
+                                                            <a href="<?php echo site_url('trans_penjualan/cetak/'.$r->id_trans); ?>" target="_blank" class="text-blue" style="cursor: pointer;"><i class="fa fa-print"></i> Cetak Struk</a></li>
 
-                                                        <?php if($r->status_transaksi == 'PESAN'){ ?>
+                                                        <?php if($r->status_transaksi == 'PESAN' || $r->status_transaksi == 'PROSES'){ ?>
                                                             <?php $url = site_url("trans_penjualan/create_edit/".$r->id_trans) ."?" . $url_param;
                                                             if(strpos($url, 'paging=') === false){
                                                                 $url .= "&paging=" . urlencode($paging_param);
                                                             } ?>
                                                             <li><a href="<?php echo $url; ?>" class="text-blue"><i class="fa fa-pencil"></i> Edit</a></li>
                                                         <?php } ?>
-                                                        <?php $url = site_url("trans_penjualan/create_edit_pengiriman/".$r->id_trans.'/'.$r->id_pengiriman) ."?" . $url_param;
                                                         if(strpos($url, 'paging=') === false){
-                                                            $url .= "&paging=" . urlencode($paging_param);
-                                                        } ?>
-                                                        <li><a href="<?php echo $url; ?>" class="text-blue"><i class="fa fa-truck"></i>Pengiriman</a></li>
-                                                        <?php $url = site_url("trans_penjualan/create_edit_pembayaran/".$r->id_trans) ."?" . $url_param;
-                                                        if(strpos($url, 'paging=') === false){
-                                                            $url .= "&paging=" . urlencode($paging_param);
-                                                        } ?>
-                                                        <li><a href="<?php echo $url; ?>" class="text-blue"><i class="fa fa-money"></i>Pembayaran</a></li>
+
                                                     <?php } ?>
                                             </ul>
                                             </div>
@@ -462,7 +454,7 @@
 
     <?php if($this->input->get("cetak")){
         $id_cetak = $this->input->get("cetak");
-        $url = base_url('/trans_penjualan/cetak/'.$id_cetak);
+        $url = site_url('/trans_penjualan/cetak/'.$id_cetak);
         echo 'window.open("'.$url.'", "_blank");';
     } ?>
 </script>

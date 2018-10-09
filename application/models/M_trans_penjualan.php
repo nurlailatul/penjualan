@@ -204,7 +204,7 @@ class M_trans_penjualan extends CI_Model
         $query .= " ORDER BY id_pembayaran DESC ";
         $sql = $this->db->query($query, $param);
 
-        return $sql->result();
+        return $sql->row();
     }
 
     function get_data_trans_process($id_trans)
@@ -347,10 +347,16 @@ class M_trans_penjualan extends CI_Model
         unset($param['id_history']);
         unset($param['jumlah_pax']);
 
+        $id_user = $this->session->userdata('r_userId');
+        $this->db->set('last_upd_user', $id_user);
+        $this->db->set('last_upd_time', 'NOW()', FALSE);
+        $this->db->where('id_trans', $id_trans);
+        $this->db->update('trans_penjualan', $param);
+
         // Update transaksi_detail while calculate update stock
 
         // Delete that not in
-        $notIn = $this->db->query("SELECT t.*, bh.id_barang FROM trans_penjualan_detail  
+        $notIn = $this->db->query("SELECT t.*, bh.id_barang FROM trans_penjualan_detail t 
         JOIN barang_history bh on t.id_barang_history = bh.id_history 
         WHERE id_trans = ? AND id_barang_history NOT IN ?",array($id_trans, $id_history))->result();
         foreach ($notIn as $r){
@@ -380,7 +386,7 @@ class M_trans_penjualan extends CI_Model
 
             $b_history = $this->db->query("SELECT id_barang FROM barang_history WHERE id_history = ?", $r)->row();
             $jml_pax = $jumlah_pax[$k];
-            $old_jml_pax = $data_lama->jml_pax;
+            $old_jml_pax = $data_lama->jumlah_pax;
 
             //Check stok
             $stok = $this->db->query("SELECT * FROM stok_barang WHERE id_barang = ? ORDER BY tgl DESC LIMIT 1", $b_history->id_barang)->row();
@@ -570,7 +576,8 @@ class M_trans_penjualan extends CI_Model
 
     function update_status_trans_penjualan($id_trans)
     {
-        $utama = $this->db->query("SELECT * FROM trans_penjualan WHERE id_trans = ?", $id_trans)->row();
+        $utama = $this->db->query("SELECT t.*, biaya_penjualan FROM trans_penjualan t JOIN v_trans_penjualan_total_all v ON t.id_trans = v.id_trans WHERE t.id_trans = ?", $id_trans)->row();
+
         $pembayaran = $this->db->query("SELECT * FROM pembayaran_trans_penjualan WHERE id_trans = ?", $id_trans)->result();
         $pengiriman = $this->db->query("SELECT * FROM pengiriman_trans_penjualan WHERE id_trans = ?", $id_trans)->row();
 
@@ -579,7 +586,7 @@ class M_trans_penjualan extends CI_Model
         $status_pengiriman_old = $utama->status_pengiriman;
 
         // SET STATUS PEMBAYARAN
-        $biaya_penjualan = $utama->total_harga - $utama->diskon + $utama->biaya_tambahan + $utama->biaya_pembatalan;
+        $biaya_penjualan = $utama->biaya_penjualan;
         if($status_transaksi == 'BATAL')
             $status_pembayaran_new = 'BATAL';
         else if(empty($pembayaran))
