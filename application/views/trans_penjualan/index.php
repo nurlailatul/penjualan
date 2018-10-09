@@ -259,7 +259,6 @@
                                                             } ?>
                                                             <li><a href="<?php echo $url; ?>" class="text-blue"><i class="fa fa-pencil"></i> Edit</a></li>
                                                         <?php } ?>
-                                                        if(strpos($url, 'paging=') === false){
 
                                                     <?php } ?>
                                             </ul>
