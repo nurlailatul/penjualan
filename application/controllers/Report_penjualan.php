@@ -440,7 +440,7 @@ class Report_penjualan extends BaseController
         foreach ($results->result() as $r){
 
             $barang = $this->db->query("SELECT harga_beli, harga_reseller, harga_umum FROM barang WHERE id_barang = ?", $r->id_barang)->row();
-            if($r->jenis_transaksi == 'DROPSHIP')
+            if($r->jenis_transaksi == 'RESELLER')
                 $harga_satuan = $barang->harga_reseller;
             else
                 $harga_satuan = $barang->harga_umum;

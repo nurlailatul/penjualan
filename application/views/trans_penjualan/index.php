@@ -50,7 +50,7 @@
                                             <select class="form-control" name="jenis_transaksi">
                                                 <option selected disabled>Jenis</option>
                                                 <option value="all" <?php echo !isset($jenis_transaksi) ? 'selected' : ''; ?>>Semua</option>
-                                                <option value="DROPSHIP" <?php echo isset($jenis_transaksi) && $jenis_transaksi == 'DROPSHIP' ? 'selected' : ''; ?>>DROPSHIP</option>
+                                                <option value="RESELLER" <?php echo isset($jenis_transaksi) && $jenis_transaksi == 'RESELLER' ? 'selected' : ''; ?>>RESELLER</option>
                                                 <option value="BIASA" <?php echo isset($jenis_transaksi) && $jenis_transaksi == 'BIASA' ? 'selected' : ''; ?>>BIASA</option>
                                             </select>
                                         </div>
@@ -125,20 +125,6 @@
 
                                             <div class="form-group">
                                                 <div class="input-group mt-5">
-                                            <span class="input-group-addon bg-gray">
-                                                <div>Reseller</div>
-                                            </span>
-                                                    <select class="form-control chosen-select" name="reseller[]" data-placeholder="Pilih Reseller" style="width: 100%;" multiple>
-                                                        <option></option>
-                                                        <?php foreach ($data_reseller as $r){ ?>
-                                                            <option value="<?php echo $r->id_pelanggan; ?>" <?php echo (isset($filter->reseller) && in_array($r->id_pelanggan, $filter->reseller)) ? 'selected': ''; ?>><?php echo $r->nama; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="input-group mt-5">
                                                     <span class="input-group-addon bg-gray">
                                                         <div>Pelanggan</div>
                                                     </span>
@@ -146,19 +132,6 @@
                                                         <option></option>
                                                         <?php foreach ($data_pelanggan as $r){ ?>
                                                             <option value="<?php echo $r->id_pelanggan; ?>" <?php echo (isset($filter->pelanggan) && in_array($r->id_pelanggan, $filter->pelanggan)) ? 'selected': ''; ?>><?php echo $r->nama; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="input-group mt-5">
-                                                    <span class="input-group-addon bg-gray">
-                                                        <div>Kurir</div>
-                                                    </span>
-                                                    <select class="form-control chosen-select" name="kurir[]" data-placeholder="Pilih Kurir" style="width: 100%;" multiple>
-                                                        <option></option>
-                                                        <?php foreach ($data_kurir as $r){ ?>
-                                                            <option value="<?php echo $r->id_pegawai; ?>" <?php echo (isset($filter->kurir) && in_array($r->id_pegawai, $filter->kurir)) ? 'selected': ''; ?>><?php echo $r->nama; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -272,7 +245,7 @@
                                             ?>
                                         </td>
                                         <td class="wrap"><?php echo $r->jenis_transaksi; ?>
-                                        <?php if($r->nama_reseller != NULL) echo '<br><i class="fa fa-user"></i> '.$r->nama_reseller; ?></td>
+                                        </td>
                                         <td class="wrap"><?php echo $r->pelanggan; ?></td>
 
                                         <td class=" text-right">

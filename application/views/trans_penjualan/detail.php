@@ -30,14 +30,6 @@
                                     <?php echo $detail->jenis_transaksi; ?>
                                 </div>
                             </div>
-                            <?php if($detail->nama_reseller != NULL){ ?>
-                                <div class="row">
-                                    <label class="col-sm-4 control-label"> Reseller</label>
-                                    <div class="col-sm-7">
-                                        <?php echo $detail->nama_reseller; ?>
-                                    </div>
-                                </div>
-                            <?php } ?>
                             <div class="row">
                                 <label class="col-sm-4 control-label"> Pelanggan</label>
                                 <div class="col-sm-7">
@@ -214,7 +206,8 @@
                                 </div>
                             </div>
                             <hr>
-                            <?php if(!empty($data_pembayaran)){ ?>
+                            <?php if(!empty($data_pembayaran)){
+                                $r = $data_pembayaran; ?>
                                 <h4><i class="fa fa-money"></i> Data Pembayaran</h4>
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -229,7 +222,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $nominal = 0; foreach ($data_pembayaran as $r){ ?>
+                                            <?php $nominal = 0;  ?>
                                                 <tr>
                                                     <td class="wrap"><?php echo set_indo_time($r->waktu_pembayaran); ?></td>
                                                     <td class="wrap"><?php echo $r->metode_pembayaran; ?></td>
@@ -237,7 +230,7 @@
                                                     <td><?php echo $r->catatan; ?></td>
                                                 </tr>
 
-                                                <?php $nominal += $r->nominal; } ?>
+                                                <?php $nominal += $r->nominal;  ?>
                                             <tr class="bg-gray" style="font-weight: bold;">
                                                 <td colspan="2" class="center">TOTAL PEMBAYARAN</td>
                                                 <td class="wrap text-right"><?php echo 'Rp. '.set_currency_format($nominal); ?></td>

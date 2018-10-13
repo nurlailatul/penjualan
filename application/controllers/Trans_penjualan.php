@@ -25,7 +25,6 @@ class Trans_penjualan extends BaseController
         $this->data['data_status_transaksi'] = $this->m_global->get_enum_values("trans_penjualan", "status_transaksi");
         $this->data['data_status_pembayaran'] = $this->m_global->get_enum_values("trans_penjualan","status_pembayaran");
         $this->data['data_status_pengiriman'] = $this->m_global->get_enum_values("trans_penjualan","status_pengiriman");
-        $this->data['data_reseller'] = $this->m_global->get_data_reseller();
         $this->data['data_pelanggan'] = $this->m_global->get_data_pelanggan();
         $this->data['data_kurir'] = $this->m_global->get_data_kurir();
 
@@ -149,8 +148,10 @@ class Trans_penjualan extends BaseController
             if($this->input->get("paging"))
                 $paging = $this->input->get("paging", TRUE);
 
-            if($this->input->post("btn_submit") == 'save_print')
-              $url_param .= '&cetak='.$status;
+            if($this->input->post("btn_submit") == 'save_print') {
+                $url_param .= '&cetak=' . $status;
+                echo $url_param;exit();
+            }
 
             redirect('trans_penjualan/index/'.$paging.'?'.$url_param);
 
@@ -359,7 +360,7 @@ class Trans_penjualan extends BaseController
     function proses_insert_edit_trans_penjualan($id = null)
     {
         // Declare table fields
-        $array_fields = array('jenis_transaksi','id_reseller','id_pelanggan','pelanggan_baru','waktu_transaksi','diskon','biaya_tambahan','biaya_pembatalan','keterangan','id_history','jumlah_pax');
+        $array_fields = array('jenis_transaksi','id_pelanggan','pelanggan_baru','waktu_transaksi','diskon','biaya_tambahan','biaya_pembatalan','keterangan','id_history','jumlah_pax', 'status_transaksi');
 
         // Store input into variable
         foreach ($array_fields as $r){
@@ -372,6 +373,15 @@ class Trans_penjualan extends BaseController
         $parameters = array();
         foreach ($array_fields as $r){
             $parameters[$r] = ${$r};
+        }
+
+        $r = 'status_pembayaran';
+        if($this->input->post($r, TRUE) != ""){
+            $parameters[$r] = $this->input->post($r, TRUE);
+        }
+        $r = 'status_pengiriman';
+        if($this->input->post($r, TRUE) != ""){
+            $parameters[$r] = $this->input->post($r, TRUE);
         }
         $this->data['edit'] = $parameters;
 
@@ -402,11 +412,8 @@ class Trans_penjualan extends BaseController
             if($result){
               $id_pengiriman = $this->input->post("id_pengiriman", TRUE);
               $id_pembayaran = $this->input->post("id_pembayaran", TRUE);
-              $result1 = $this->proses_insert_edit_pengiriman_trans_penjualan($id, $id_pengiriman);
-              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan($id, $id_pembayaran);
-
-              if(!$result1 || !$result2)
-                return FALSE;
+              $this->proses_insert_edit_pengiriman_trans_penjualan($id, $id_pengiriman);
+              $this->proses_insert_edit_pembayaran_trans_penjualan($id, $id_pembayaran);
             }
             else
               return FALSE;
@@ -416,11 +423,8 @@ class Trans_penjualan extends BaseController
             $result = $this->m_trans_penjualan->insert_trans_penjualan($parameters);
 
             if($result){
-              $result1 = $this->proses_insert_edit_pengiriman_trans_penjualan($result);
-              $result2 = $this->proses_insert_edit_pembayaran_trans_penjualan($result);
-
-              if(!$result1 || !$result2)
-                return FALSE;
+              $this->proses_insert_edit_pengiriman_trans_penjualan($result);
+              $this->proses_insert_edit_pembayaran_trans_penjualan($result);
             }
             else
               return FALSE;

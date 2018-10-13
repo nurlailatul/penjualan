@@ -34,7 +34,7 @@ if ( ! function_exists('set_indo_date')) {
 		if ($tanggal == "--") {
 			return "";
 		}
-		
+
         $bulan = array(1 => 'Januari',
             'Februari',
             'Maret',
@@ -71,7 +71,7 @@ if ( ! function_exists('set_indo_time')) {
     {
         // Parameter Input : YYYY-MM-DD hh:mm:ss
         // Return Output : 01 Januari 2018 12:00 or NULL
-        if ($tanggal != '0000-00-00 00:00:00' || $tanggal == NULL) {
+        if ($tanggal != '0000-00-00 00:00:00' && $tanggal != NULL) {
             $bulan = array(1 => 'Januari',
                 'Februari',
                 'Maret',
@@ -233,7 +233,7 @@ if ( ! function_exists('handle_file_upload_dok_penerima')) {
 			} else if (!isset($is_hardcopy) && $dokumen_type == '009') {
 				$config['allowed_types'] = 'pdf|doc|docx|xls|xlsx';
 			}
-            
+
             $config['max_size'] = '2048'; // 2 MB
             $config['overwrite'] = TRUE;
             $config['remove_spaces'] = TRUE;

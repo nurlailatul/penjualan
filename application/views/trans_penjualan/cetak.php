@@ -66,9 +66,9 @@
                             <tr>
                                 <td><?php echo $n++; ?></td>
                                 <td><?php echo $r->nama_barang; ?></td>
-                                <td class="text-right"><?php echo set_currency_format($r->harga_satuan); ?></td>
+                                <td class="text-right"><?php echo 'Rp. '.set_currency_format($r->harga_satuan); ?></td>
                                 <td class="text-right"><?php echo $r->jumlah_pax; ?></td>
-                                <td class="text-right"><?php echo set_currency_format($r->total); ?></td>
+                                <td class="text-right"><?php echo 'Rp. '.set_currency_format($r->total); ?></td>
                             </tr>
                         <?php }
                         ?>
@@ -76,35 +76,21 @@
                         <tfoot>
                         <tr class="">
                             <th colspan="4" class="center">TOTAL</th>
-                            <th class=" text-right"><?php echo set_currency_format($total_harga); ?></th>
+                            <th class=" text-right"><?php echo 'Rp. '.set_currency_format($total_harga); ?></th>
                         </tr>
                         <tr class="">
                             <th colspan="4" class="center">Diskon</th>
-                            <th class=" text-right">- <?php echo set_currency_format($detail->diskon); ?></th>
+                            <th class=" text-right">- <?php echo 'Rp. '.set_currency_format($detail->diskon); ?></th>
                         </tr>
                         <tr class="">
                             <th colspan="4" class="center">Biaya Tambahan</th>
-                            <th class=" text-right"><?php echo set_currency_format($detail->biaya_tambahan); ?></th>
+                            <th class=" text-right"><?php echo 'Rp. '.set_currency_format($detail->biaya_tambahan); ?></th>
                         </tr>
-                        <?php if($detail->biaya_pembatalan != 0){ ?>
-                            <tr class="">
-                                <th colspan="4" class="center">Biaya Pembatalan</th>
-                                <th class=" text-right"><?php echo set_currency_format($detail->biaya_pembatalan); ?></th>
-                            </tr>
-                        <?php } ?>
 
-                        <?php $biaya_pengiriman = 0;
-                        if(isset($data_pengiriman) && !empty($data_pengiriman)){
-                          $biaya_pengiriman = $data_pengiriman->biaya_pengiriman; ?>
-                            <tr>
-                                <th colspan="4" class="center">Biaya Pengiriman</th>
-                                <th class=" text-right"><?php echo 'Rp. '.set_currency_format($biaya_pengiriman); ?></th>
-                            </tr>
-                        <?php } ?>
-                        <?php $total = $total_harga - $detail->diskon + $detail->biaya_tambahan + $detail->biaya_pembatalan + $biaya_pengiriman; ?>
+                        <?php $total = $total_harga - $detail->diskon + $detail->biaya_tambahan; ?>
                         <tr>
                             <th colspan="4" class="center">TOTAL HARGA</th>
-                            <th class=" text-right"><?php echo set_currency_format($total); ?></th>
+                            <th class=" text-right"><?php echo 'Rp. '.set_currency_format($total); ?></th>
                         </tr>
 
 
@@ -130,7 +116,7 @@
                       </tr>
                       <tr>
                           <td>Nominal</td>
-                          <td><?php /*echo 'Rp. '.set_currency_format($r->nominal); */?></td>
+                          <td><?php /*echo 'Rp. '.'Rp. '.set_currency_format($r->nominal); */?></td>
                       </tr>
 
                 <?php /*} */?>
@@ -166,7 +152,7 @@
                 <?php /*} */?>
                   <tr>
                       <td>Biaya Pengiriman</td>
-                      <td><?php /*echo set_currency_format($data_pengiriman->biaya_pengiriman); */?></td>
+                      <td><?php /*echo 'Rp. '.set_currency_format($data_pengiriman->biaya_pengiriman); */?></td>
                   </tr>
                   <tr>
                       <td>Waktu Sampai</td>

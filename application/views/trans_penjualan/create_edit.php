@@ -37,18 +37,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group" id="reseller" style="display:<?php if(isset($edit) && $edit->id_reseller != NULL) echo 'block'; else echo 'none'; ?>;">
-                        <label class="col-sm-2 control-label">Reseller <label class="text-red">*</label> </label>
-
-                        <div class="col-sm-6">
-                            <select class="form-control chosen-select" name="id_reseller" data-placeholder="Pilih Reseller" style="width: 100%;">
-                                <option></option>
-                                <?php foreach ($data_reseller as $r){ ?>
-                                    <option value="<?php echo $r->id_pelanggan; ?>" <?php echo (isset($edit) && $r->id_pelanggan == $edit->id_reseller) ? 'selected': ''; ?>><?php echo $r->nama.' - '.$r->no_telp.' - '.$r->alamat; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Pelanggan <label class="text-red">*</label> </label>
 
@@ -98,8 +86,8 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div id="transaksi_dropship" style="display: <?php echo isset($edit) && $edit->jenis_transaksi == 'DROPSHIP' ? 'block' : 'none'; ?>;" >
-                                <select class="form-control chosen-select" name="transaksi_dropship" data-placeholder="Pilih Barang" style="width: 100%;">
+                            <div id="transaksi_reseller" style="display: <?php echo isset($edit) && $edit->jenis_transaksi == 'RESELLER' ? 'block' : 'none'; ?>;" >
+                                <select class="form-control chosen-select" name="transaksi_reseller" data-placeholder="Pilih Barang" style="width: 100%;">
                                     <option></option>
                                     <?php foreach ($data_barang as $r){ ?>
                                         <?php if($r->stok > 0){ ?>
@@ -194,10 +182,10 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Status Transaksi</label>
+                        <label class="col-sm-2 control-label">Status Transaksi  <label class="text-red">*</label></label>
 
                         <div class="col-sm-6">
-                            <select class="form-control" name="status_transaksi" id="statusTransaksi" width="100%">
+                            <select class="form-control" name="status_transaksi" id="statusTransaksi" width="100%" required>
                                 <option selected disabled>Pilih Salah Satu</option>
                             <?php foreach ($data_status_transaksi as $r){ ?>
                                 <option value="<?php echo $r; ?>" <?php echo (isset($edit) && $edit->status_transaksi == $r) ? 'selected': ''; ?>><?php echo $r; ?></option>
@@ -391,26 +379,23 @@
 
     function changeJenisTransaksi(jenis) {
         if(jenis == 'BIASA'){
-            $("#reseller").css("display","none");
-            $("select[name='id_reseller']").val(null).trigger("change");
             $("#transaksi_null").css("display", "none");
-            $("#transaksi_dropship").css("display", "none");
+            $("#transaksi_reseller").css("display", "none");
             $("#transaksi_biasa").css("display", "block");
         } else {
-            $("#reseller").css("display","block");
             $("#transaksi_null").css("display", "none");
-            $("#transaksi_dropship").css("display", "block");
+            $("#transaksi_reseller").css("display", "block");
             $("#transaksi_biasa").css("display", "none");
         }
     }
 
     function pilihBarang() {
         var transaksi = $("select[name='jenis_transaksi'").val();
-        if(transaksi == 'DROPSHIP')
-            var cbx = $("select[name='transaksi_dropship'");
+        if(transaksi == 'RESELLER')
+            var cbx = $("select[name='transaksi_reseller'");
         else
             var cbx = $("select[name='transaksi_biasa'");
-            
+
         var id_history = cbx.val();
         var element = '#item-'+id_history+'-';
         if($(element).length == 0) {
@@ -546,10 +531,6 @@
             if(waktuPembayaran.val() == '') {
                 waktuPembayaran.val(waktuTransaksi);
             }
-
-            if(nominal.val() == '' || nominal.val() == '0') {
-                getTotalBiaya();
-            }
         }
     });
 
@@ -639,7 +620,7 @@
                     valid = false;
                 }
                 if($("#nominal").val() == ''){
-                    alert('Biaya Pengiriman tidak boleh kosong');
+                    alert('Biaya Pembayaran tidak boleh kosong');
                     valid = false;
                 }
             }

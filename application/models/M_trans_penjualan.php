@@ -12,7 +12,7 @@ class M_trans_penjualan extends CI_Model
         if(isset($is_count)){
             $kolom = " COUNT(b.id_trans) as jumlah ";
         } else {
-            $kolom = " b.*, p.nama as pelanggan, u.real_name, id_pengiriman, waktu_pengiriman, waktu_sampai, jenis_ekspedisi, no_resi, k.biaya_pengiriman, g.nama as nama_kurir, je.nama as jenis_ekspedisi, p2.nama as nama_reseller, v.biaya_penjualan, v2.tot_harga_jual ";
+            $kolom = " b.*, p.nama as pelanggan, u.real_name, id_pengiriman, waktu_pengiriman, waktu_sampai, jenis_ekspedisi, no_resi, k.biaya_pengiriman, g.nama as nama_kurir, je.nama as jenis_ekspedisi, v.biaya_penjualan, v2.tot_harga_jual ";
         }
         $query = "SELECT $kolom FROM trans_penjualan b 
                     JOIN pelanggan p ON b.id_pelanggan = p.id_pelanggan
@@ -20,7 +20,6 @@ class M_trans_penjualan extends CI_Model
                     LEFT JOIN pengiriman_trans_penjualan k on b.id_trans = k.id_trans
                     LEFT JOIN jenis_ekspedisi je ON k.jenis_ekspedisi = je.id_jenis
                     LEFT JOIN pegawai g ON k.id_kurir = g.id_pegawai
-                    LEFT JOIN pelanggan p2 on b.id_reseller = p2.id_pelanggan
                     JOIN v_trans_penjualan_total_all v ON b.id_trans = v.id_trans
                     JOIN v_trans_penjualan_total v2 ON b.id_trans = v2.id_trans
                     WHERE 1 ";
@@ -75,14 +74,6 @@ class M_trans_penjualan extends CI_Model
             $item = $filter['jenis_transaksi'];
             if (!empty($item)) {
                 $query .= " AND jenis_transaksi = ? ";
-                $param[] = $item;
-            }
-        }
-
-        if(isset($filter['reseller'])) {
-            $item = $filter['reseller'];
-            if (!empty($item)) {
-                $query .= " AND id_reseller IN ? ";
                 $param[] = $item;
             }
         }
@@ -155,9 +146,9 @@ class M_trans_penjualan extends CI_Model
     function get_data_trans_detail($id_trans)
     {
         $query = "SELECT t.*, b.id_history, b.id_barang, b.nama as nama_barang, 
-                IF(p.jenis_transaksi = 'DROPSHIP', b.harga_reseller, b.harga_umum) as harga_satuan,  
-                IF(p.jenis_transaksi = 'DROPSHIP', jumlah_pax * b.harga_reseller, jumlah_pax * b.harga_umum) as total, 
-                IF(p.jenis_transaksi = 'DROPSHIP', b.harga_reseller - b.harga_beli, b.harga_umum - b.harga_beli) as laba, 
+                IF(p.jenis_transaksi = 'RESELLER', b.harga_reseller, b.harga_umum) as harga_satuan,  
+                IF(p.jenis_transaksi = 'RESELLER', jumlah_pax * b.harga_reseller, jumlah_pax * b.harga_umum) as total, 
+                IF(p.jenis_transaksi = 'RESELLER', b.harga_reseller - b.harga_beli, b.harga_umum - b.harga_beli) as laba, 
                 b.kode
                 FROM trans_penjualan_detail t
                 JOIN trans_penjualan p ON t.id_trans = p.id_trans 
@@ -562,8 +553,6 @@ class M_trans_penjualan extends CI_Model
         $this->db->set('last_modified_time', 'NOW()', FALSE);
         $this->db->where('id_pembayaran', $id_pembayaran);
         $this->db->update('pembayaran_trans_penjualan', $param);
-
-        $this->update_status_trans_penjualan($param['id_trans']);
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
