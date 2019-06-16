@@ -150,7 +150,7 @@
                                         <td class="wrap"><?php echo $uri_segment + $i++; ?>. </td>
                                         <td class="wrap">
                                             <div class="btn-group">
-                                                <a class="btn btn-success" href="<?php echo site_url('trans_penjualan/index?reseller[]='.$r->id_reseller); ?>"><i class="fa fa-search"></i>  </a>
+                                                <a class="btn btn-success" href="<?php echo site_url('trans_penjualan/index?reseller[]='.$r->id_pelanggan); ?>"><i class="fa fa-search"></i>  </a>
                                             </div>
                                         </td>
                                         <td class=""><?php echo $r->nama; ?></td>

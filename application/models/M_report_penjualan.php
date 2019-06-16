@@ -23,7 +23,7 @@ class M_report_penjualan extends CI_Model {
         if(isset($filter['reseller'])) {
             $item = $filter['reseller'];
             if (!empty($item)) {
-                $query .= " AND id_reseller IN ? ";
+                $query .= " AND id_pelanggan IN ? ";
                 $param[] = $item;
             }
         }
@@ -163,15 +163,15 @@ class M_report_penjualan extends CI_Model {
     function get_transaksi_per_reseller($is_count = false, $filter = array(), $start = null, $limit = null)
     {
         if($is_count) {
-            $kolom = " COUNT(DISTINCT id_reseller) as jml ";
+            $kolom = " COUNT(DISTINCT id_pelanggan) as jml ";
         } else {
-            $kolom = ' id_reseller, nama,
+            $kolom = ' id_pelanggan, nama,
                   SUM(tot_laba) as tot_laba, SUM(tot_penjualan) as tot_penjualan ';
         }
 
         $query = "SELECT $kolom
                 FROM v_penjualan_reseller_per_hari v 
-                JOIN pelanggan p ON v.id_reseller = p.id_pelanggan
+                JOIN pelanggan p ON v.id_pelanggan = p.id_pelanggan
                 WHERE 1 ";
 
         $param = array();
