@@ -86,7 +86,6 @@ class M_barang extends CI_Model
             $param['jenis_transaksi'] = 'TAMBAH BARANG';
             $param['masuk'] = $stok;
 
-            $this->db->set('created_date', 'NOW()', FALSE);
             $this->db->set('created_time', 'NOW()', FALSE);
 
             $this->db->insert('trans_stok_barang', $param);
@@ -144,8 +143,6 @@ class M_barang extends CI_Model
 
             $param = array();
             $param['id_barang'] = $id_barang;
-            $this->db->set('created_date', 'NOW()', FALSE);
-            $this->db->set('created_time', 'NOW()', FALSE);
 
             $data_stok = $this->db->query("SELECT stok FROM stok_barang WHERE id_barang = ? ORDER BY tgl DESC LIMIT 1", $id_barang);
 
