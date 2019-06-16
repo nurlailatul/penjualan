@@ -115,14 +115,14 @@
             var harga_umum = $("input[name='harga_umum']").val();
 
             var regex = /[.\s]/g;
-            var harga_beli = harga_beli.replace(regex, '');
-            var harga_reseller = harga_reseller.replace(regex, '');
-            var harga_umum = harga_umum.replace(regex, '');
+            var harga_beli = parseInt(harga_beli.replace(regex, ''));
+            var harga_reseller = parseInt(harga_reseller.replace(regex, ''));
+            var harga_umum = parseInt(harga_umum.replace(regex, ''));
 
             var valid = true;
             // harga beli can't higher than harga reseller or harga umum
             if(harga_beli > harga_reseller || harga_beli > harga_umum){
-                alert('Harga tidak valid. Cek kembali');
+                alert('Harga tidak valid. Cek kembali!');
                 valid = false;
             }
 
